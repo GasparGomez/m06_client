@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>gatos</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script src="js/funcions.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1 id="titol">Cat clicker</h1>
+        <div id="appGatos">
+            <ul id="llista">
+                <li v-for="(gatoLista, index) in gatos" :key="gatoLista.name" v-on:click="hazAlgo(index)">
+                    {{ gatoLista.name }}
+                </li>
+            </ul>
+            <br><br>
+            <div id="gato">
+                <div @click="clickGato">
+                    <h1 :class="{importante:gatos[gatoActivo].importante}">{{ gatos[gatoActivo].name }}</h1>
+                    <img id="imgGato" width="350px" :src="gatos[gatoActivo].image">
+                    <h2 id="contador">{{ gatos[gatoActivo].nclicks }}</h2>
+                </div>
+
+            </div>
+            <br>
+            <br>
+            <div class="admin">
+                <button @click="mostrarAdmin = !mostrarAdmin">Admin</button>
+                <div class="zonaAdmin" v-show="mostrarAdmin">
+                    <input v-model="gatos[gatoActivo].name">
+                    <input v-model="gatos[gatoActivo].content">
+                    <input v-model="gatos[gatoActivo].image">
+                    <input type="checkbox" v-model="gatos[gatoActivo].importante" true-value="1" false-value="false">Importante
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

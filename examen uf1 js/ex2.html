@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Exercici 2</title>
+        <script src="examen.js"></script>
+    </head>
+    <body>
+
+        <script>
+            function exercici2() {
+                let num = Math.floor(Math.random() * 100) + 1;
+
+                let htmlStr = `
+                <h1>Num inicial: ${num}</h1>
+                <ul>`;
+
+                if (num >= 50) {
+                    let numInicial = 51;
+
+                    while (numInicial < num) {
+                        if (numInicial % 2 != 0) {
+                            htmlStr += `<li>${numInicial}</li>`;
+                        }
+                        numInicial++;
+                    }
+                } else {
+                    let numdesde50 = 50;
+                    while (numdesde50 >= num) {
+                        htmlStr += `<li>${numdesde50}</li>`;
+                        numdesde50--;
+                    }
+                } htmlStr += `</ul>`;
+                
+                document.open();
+                document.write(htmlStr);
+                document.close();
+            }
+            exercici2();
+        </script>
+    </body>
+</html>

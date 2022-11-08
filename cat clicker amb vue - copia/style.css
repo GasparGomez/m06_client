@@ -1,0 +1,65 @@
+#titol {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.5;
+    letter-spacing: 0.15em;
+    text-align: center;
+}
+
+ul {
+    background: #58aafc;
+    padding: 20px;
+    width: 5cm;
+    text-align: center;
+    border-radius: 10px;
+    margin: 0 auto;
+    -webkit-box-shadow: 10px 10px 25px 0 rgba(143, 143, 143, 1);
+    -moz-box-shadow: 10px 10px 25px 0 rgba(143, 143, 143, 1);
+    box-shadow: 10px 10px 25px 0 rgba(143, 143, 143, 1);
+}
+
+ul li {
+    background: #cce5ff;
+    color: darkblue;
+    border-radius: 5px;
+    margin: 5px;
+    list-style-type: none;
+}
+
+li:hover {
+    color: white;
+    background: darkblue;
+    cursor: pointer;
+}
+
+#gato {
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color:#58aafc;
+    width: fit-content;
+    height: fit-content;
+    -webkit-box-shadow: 10px 10px 25px 0 rgba(143, 143, 143, 1);
+    -moz-box-shadow: 10px 10px 25px 0 rgba(143, 143, 143, 1);
+    box-shadow: 10px 10px 25px 0 rgba(143, 143, 143, 1);
+    text-align: center;
+}
+
+#imgGato {
+    border-radius: 10px;
+}
+
+#gato , #llista {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+}
+
+body {
+    background-image: url("img/catback.jpg");
+}
+
+.importante {
+    color: rgb(204, 0, 255);
+}
