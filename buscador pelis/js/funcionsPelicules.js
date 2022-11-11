@@ -6,12 +6,15 @@ Vue.component('buscador-peliculas', {
     <div>
         <b-form-input v-model="busqueda" placeholder="Pon el titulo a buscar"></b-form-input>
         <b-button @click="buscar" variant="success">Buscar</b-button>
-        <cards-peliculas></cards-peliculas>
+        <b-row>
+            <b-col md="3" v-for="peli in resultado">     
+                <card-pelicula :datos=peli></card-pelicula>
+            </b-col>
+        </b-row>
     </div>`,
     methods: {
         buscar: function () {
             fetch('http://www.omdbapi.com/?i=tt3896198&apikey=2f34fcfe&s=' + this.busqueda).then((response) => response.json()).then(data => {
-                console.log(data);
                 this.resultado = data.Search;
             });
         }
@@ -19,17 +22,20 @@ Vue.component('buscador-peliculas', {
 
 })
 
-Vue.component('cards-peliculas', {
-    data: function () {},
+Vue.component('card-pelicula', {
+    props: ['datos'],
     template: `
+    <b-card border-variant="secondary" :header="datos.Title" header-border-variant="secondary" align="center">
     <div>
-        <ul>
-            <li v-for="peli in resultado">
-                {{peli.Title}}
-            </li>
-        </ul>
-    </div>`,
-    methods: {}
+        <b-img thumbnail fluid :src="datos.Poster" :alt="datos.Title"></b-img>
+        <b-button @click="buscarInfo" variant="outline-dark">Mes informacio</b-button>
+    </div>
+    </b-card>`,
+    methods: {
+        buscarInfo : function() {
+            
+        }
+    }
 })
 
 let app = new Vue({el: '#app'});
