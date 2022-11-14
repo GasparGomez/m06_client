@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html > <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +6,8 @@
         <title>Buscador pelis</title>
         <!-- Load required Bootstrap and BootstrapVue CSS -->
         <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
-        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+        <link
+        type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
 
         <!-- Load polyfills to support older browsers -->
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
@@ -18,12 +18,28 @@
 
         <!-- Load the following for BootstrapVueIcons support -->
         <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+
+        <script src="https://unpkg.com/vue-router@3/dist/vue-router.js"></script>
+
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <div id="app">
+            <login></login>
             <buscador-peliculas></buscador-peliculas>
+            <p>
+                <!-- use the router-link component for navigation. -->
+                <!-- specify the link by passing the `to` prop. -->
+                <!-- `<router-link>` will render an `<a>` tag with the correct `href` attribute -->
+                <router-link to="/"> Go to Home</router-link>
+                <router-link to="/about">Go to About</router-link>
+            </p>
+            <router-view></router-view>
         </div>
+
+        <script src="https://unpkg.com/@vue/composition-api"></script>
+        <script src="https://unpkg.com/vue-demi"></script>
+        <script src="https://unpkg.com/pinia"></script>
     </body>
     <script src="js/funcionsPelicules.js"></script>
 </html>

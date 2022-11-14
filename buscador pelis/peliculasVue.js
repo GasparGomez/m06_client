@@ -3,12 +3,15 @@ Vue.component('pelicula', {
     template: `<div>
         <h3>{{datos.Title}}</h3>
         <b-img thumbnail fluid :src="datos.Poster" :alt="datos.Title"></b-img>        
-    </div>`
+    </div>`,
 })
 
 Vue.component('buscador-peliculas', {
-    data: function () {
-        return {busqueda: '', resultado: []}
+    data: function() {
+        return {
+            busqueda: '',
+            resultado: []
+        }
     },
     template: ` 
     <div>
@@ -22,12 +25,22 @@ Vue.component('buscador-peliculas', {
     
     </div>`,
     methods: {
-        buscar: function () {
-            fetch("https://www.omdbapi.com/?apikey=19f8a30e&s=" + this.busqueda).then(response => response.json()).then(data => {
-                this.resultado = data.Search;
-            });
+        buscar: function() {
+            fetch("https://www.omdbapi.com/?apikey=19f8a30e&s=" + this.busqueda)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    this.resultado = data.Search;
+                });
         }
     }
 });
 
-let app = new Vue({el: '#app', data: {}});
+let app = new Vue({
+    el: '#app',
+    data: {
+
+    },
+
+
+});
