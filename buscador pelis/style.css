@@ -18,3 +18,8 @@ button {
 .imatgeUsuari {
     width: 100px;
 }
+
+.routerlink , .routerlink:hover {
+    text-decoration: none;
+    color: white;
+}

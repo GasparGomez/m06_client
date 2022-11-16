@@ -85,24 +85,23 @@ Vue.component('card-pelicula', {
 })
 
 // 1. Define route components.
-const Home = {
-    template: `<div>
-    ruta home
-</div>`
+const Buscador = {
+    template: `
+    <buscador-peliculas></buscador-peliculas>`
 }
-const About = {
-    template: '<div>ruta about</div>'
+const Admin = {
+    template: '<h3>admin uwu</h3>'
 }
 
 // 2. Define some routes
 // Each route should map to a component.
 const routes = [
     {
-        path: '/',
-        component: Home
+        path: '/buscador',
+        component: Buscador
     }, {
-        path: '/about',
-        component: About
+        path: '/admin',
+        component: Admin
     },
 ]
 
