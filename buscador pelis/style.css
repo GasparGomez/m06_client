@@ -7,6 +7,16 @@ button {
     margin-bottom: 15px;
 }
 
+.button-orange{
+    border-color: var(--orange);
+    color: var(--orange);
+}
+
+.button-orange:hover{
+    border-color: var(--orange);
+    background-color: var(--orange)
+}
+
 .text-center {
     margin: 10px;
 }
@@ -22,4 +32,8 @@ button {
 .routerlink , .routerlink:hover {
     text-decoration: none;
     color: white;
+}
+
+:root{
+    --orange: rgb(70, 143, 212);
 }
