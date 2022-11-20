@@ -10,6 +10,7 @@ button {
 .button-orange{
     border-color: var(--orange);
     color: var(--orange);
+    background-color: white;
 }
 
 .button-orange:hover{

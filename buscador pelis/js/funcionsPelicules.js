@@ -1,6 +1,6 @@
 const Buscador = Vue.component('buscador-peliculas', {
     data: function () {
-        return {busqueda: 'cars', resultado: [], infoDetallada: false}
+        return { busqueda: 'cars', resultado: [], infoDetallada: false }
     },
     template: `
     <div>
@@ -16,42 +16,44 @@ const Buscador = Vue.component('buscador-peliculas', {
     </div>`,
     methods: {
         buscarInformacion: function (id) {
-            this.infoDetallada.mostrar = true;
             fetch("https://www.omdbapi.com/?apikey=2f34fcfe&i=" + id)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    this.infoDetallada.datos = data;
+                    Swal.fire({
+                        title: data.Title,
+                        text: data.Plot,
+                    })
                 });
         },
         buscar: function () {
-            fetch('http://www.omdbapi.com/?i=tt3896198&apikey=2f34fcfe&s=' + this.busqueda).then((response) => response.json()).then(data => {
-                this.resultado = data.Search;
-            });
+            fetch('http://www.omdbapi.com/?i=tt3896198&apikey=2f34fcfe&s=' + this.busqueda)
+                .then((response) => response.json())
+                .then(data => {
+                    this.resultado = data.Search;
+                });
         }
     }
 
 })
 
 const Admin = Vue.component('zona-privada', {
-    data: function(){
+    data: function () {
         return {
             pelicules: []
         }
     },
     template: `
-    <h3>zona privada</h3>
-    `
+    <b-row>
+        <b-col md="3" v-for="peli in pelicules">     
+            <card-pelicula @evtMasInformacion='buscarInformacion' :datos=peli></card-pelicula>
+        </b-col>
+    </b-row>
+    `,
+    methods: {
+        
+    }
 })
-
-Vue.component('info-detallada', {
-    props: ['info'],
-    template: `<div>
-        <h3>Información detallada: </h3>
-        {{info.Plot}}
-        <b-button @click="info.mostrar=false">Cerrar</b-button>
-    </div>`,
-});
 
 Vue.component('login', {
     data: function () {
@@ -83,17 +85,27 @@ Vue.component('login', {
         submitLogin: function () {
             this.isloading = true;
             fetch('http://alvaro.alumnes.inspedralbes.cat/loginGET.php?username=' + this.form.usuari + '&pwd=' + this.form.contrasenya)
-            .then((response) => response.json())
-            .then(data => {
-                if (data.exito) {
-                    this.logged = true;
-                    this.imgSrc = data.imagen;
-                    this.nombre = data.nombre;
-                } else {
-                    alert("Login incorrecte");
-                }
-                this.isloading = false;
-            });
+                .then((response) => response.json())
+                .then(data => {
+                    if (data.exito) {
+                        this.logged = true;
+                        this.imgSrc = data.imagen;
+                        this.nombre = data.nombre;
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login incorrecte',
+                            text: 'Torna a intentar-ho!',
+                            showClass: {
+                                popup: 'animate__animated animate__fadeInDown'
+                            },
+                            hideClass: {
+                                popup: 'animate__animated animate__fadeOutUp'
+                            }
+                        })
+                    }
+                    this.isloading = false;
+                });
         },
         logout: function () {
             this.logged = false;
@@ -114,9 +126,9 @@ Vue.component('card-pelicula', {
     </div>
     </b-card>`,
     methods: {
-        buscarInfo: function () {},
-        enviarDades: function() {
-            
+        buscarInfo: function () { },
+        enviarDades: function () {
+
         }
     }
 })
@@ -138,4 +150,4 @@ const router = new VueRouter({
     routes // short for `routes: routes`
 })
 
-let app = new Vue({el: '#app', router});
+let app = new Vue({ el: '#app', router });
