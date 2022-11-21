@@ -7,15 +7,26 @@ button {
     margin-bottom: 15px;
 }
 
-.button-orange{
-    border-color: var(--orange);
-    color: var(--orange);
+.button-blue{
+    border-color: var(--blue);
+    color: var(--blue);
     background-color: white;
 }
 
-.button-orange:hover{
-    border-color: var(--orange);
-    background-color: var(--orange)
+.button-blue:hover{
+    border-color: var(--blue);
+    background-color: var(--blue)
+}
+
+.button-red{
+    border-color: var(--red);
+    color: var(--red);
+    background-color: white;
+}
+
+.button-red:hover{
+    border-color: var(--red);
+    background-color: var(--red)
 }
 
 .text-center {
@@ -36,5 +47,6 @@ button {
 }
 
 :root{
-    --orange: rgb(70, 143, 212);
+    --blue: rgb(70, 143, 212);
+    --red: rgb(251, 54, 54);
 }

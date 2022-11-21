@@ -1,37 +1,45 @@
 const Buscador = Vue.component('buscador-peliculas', {
     data: function () {
-        return { busqueda: 'cars', resultado: [], infoDetallada: false }
+        return {busqueda: 'cars', resultado: []}
     },
     template: `
     <div>
         <b-form-input v-model="busqueda" placeholder="Pon el titulo a buscar"></b-form-input>
         <b-button @click="buscar" variant="success">Buscar</b-button>
-        <info-detallada v-show="infoDetallada.mostrar" :info="infoDetallada"></info-detallada>
         <b-row>
             <b-col md="3" v-for="peli in resultado">     
-                <card-pelicula @evtMasInformacion='buscarInformacion' :datos=peli></card-pelicula>
+                <card-pelicula :datos=peli>
+                
+                    <b-button class="button-blue" @click="buscarInformacion(peli.imdbID)">Mas información</b-button>                
+                    <b-button class="button-blue" pill @click="afegirPelicula(peli)" variant="outline-dark">Afegir</b-button>
+                
+                </card-pelicula>
             </b-col>
         </b-row>
         
     </div>`,
     methods: {
+        afegirPelicula: function (peli) {
+            let datosEnvio = new FormData();
+            datosEnvio.append("Title", peli.Title);
+            datosEnvio.append("Poster", peli.Poster);
+            datosEnvio.append("imdbID", peli.imdbID);
+
+            url = 'http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA';
+            fetch(url, {
+                method: 'POST',
+                body: datosEnvio
+            })
+        },
         buscarInformacion: function (id) {
-            fetch("https://www.omdbapi.com/?apikey=2f34fcfe&i=" + id)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    Swal.fire({
-                        title: data.Title,
-                        text: data.Plot,
-                    })
-                });
+            fetch("https://www.omdbapi.com/?apikey=2f34fcfe&i=" + id).then(response => response.json()).then(data => {
+                Swal.fire({title: data.Title, text: data.Plot})
+            });
         },
         buscar: function () {
-            fetch('http://www.omdbapi.com/?i=tt3896198&apikey=2f34fcfe&s=' + this.busqueda)
-                .then((response) => response.json())
-                .then(data => {
-                    this.resultado = data.Search;
-                });
+            fetch('http://www.omdbapi.com/?i=tt3896198&apikey=2f34fcfe&s=' + this.busqueda).then((response) => response.json()).then(data => {
+                this.resultado = data.Search;
+            });
         }
     }
 
@@ -39,19 +47,29 @@ const Buscador = Vue.component('buscador-peliculas', {
 
 const Admin = Vue.component('zona-privada', {
     data: function () {
-        return {
-            pelicules: []
-        }
+        return {pelicules: []}
     },
     template: `
     <b-row>
         <b-col md="3" v-for="peli in pelicules">     
-            <card-pelicula @evtMasInformacion='buscarInformacion' :datos=peli></card-pelicula>
+        <card-pelicula :datos=peli>
+            <b-button class="button-red" pill @click="borrarPelicula(peli.id)" variant="outline-dark">Borrar</b-button>
+        </card-pelicula>
         </b-col>
     </b-row>
     `,
+    mounted: function () {
+        url = 'http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA';
+        fetch(url).then((response) => response.json()).then((data) => {
+            this.pelicules = data.records;
+            // console.log(data.records);
+        });
+    },
     methods: {
-        
+        borrarPelicula: function (id) {
+            fetch('http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA/' + id, {method: 'DELETE'}).then((response) => response.json()).then((data) => { // this.peliculas.splice(pos, 1)
+            });
+        }
     }
 })
 
@@ -65,7 +83,7 @@ Vue.component('login', {
             logged: false,
             imgSrc: '',
             nombre: '',
-            isloading: false // default value
+            isloading: false
         }
     },
     template: `
@@ -84,28 +102,26 @@ Vue.component('login', {
     methods: {
         submitLogin: function () {
             this.isloading = true;
-            fetch('http://alvaro.alumnes.inspedralbes.cat/loginGET.php?username=' + this.form.usuari + '&pwd=' + this.form.contrasenya)
-                .then((response) => response.json())
-                .then(data => {
-                    if (data.exito) {
-                        this.logged = true;
-                        this.imgSrc = data.imagen;
-                        this.nombre = data.nombre;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Login incorrecte',
-                            text: 'Torna a intentar-ho!',
-                            showClass: {
-                                popup: 'animate__animated animate__fadeInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__fadeOutUp'
-                            }
-                        })
-                    }
-                    this.isloading = false;
-                });
+            fetch('http://alvaro.alumnes.inspedralbes.cat/loginGET.php?username=' + this.form.usuari + '&pwd=' + this.form.contrasenya).then((response) => response.json()).then(data => {
+                if (data.exito) {
+                    this.logged = true;
+                    this.imgSrc = data.imagen;
+                    this.nombre = data.nombre;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login incorrecte',
+                        text: 'Torna a intentar-ho!',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
+                    })
+                }
+                this.isloading = false;
+            });
         },
         logout: function () {
             this.logged = false;
@@ -121,20 +137,16 @@ Vue.component('card-pelicula', {
     <b-card border-variant="secondary" :header="datos.Title" header-border-variant="secondary" align="center">
     <div>
         <b-img thumbnail fluid :src="datos.Poster" :alt="datos.Title"></b-img>
-        <b-button class="button-orange" @click="$emit('evtMasInformacion', datos.imdbID)">Mas información</b-button>
-        <b-button class="button-orange" pill @click="buscarInfo" variant="outline-dark">Afegir</b-button>
+        <br>
+        <slot></slot>
     </div>
     </b-card>`,
     methods: {
-        buscarInfo: function () { },
-        enviarDades: function () {
-
-        }
+        enviarDades: function () {}
     }
 })
 
-// 2. Define some routes
-// Each route should map to a component.
+// =============== Routes ===============
 const routes = [
     {
         path: '/',
@@ -150,4 +162,4 @@ const router = new VueRouter({
     routes // short for `routes: routes`
 })
 
-let app = new Vue({ el: '#app', router });
+let app = new Vue({el: '#app', router});
