@@ -1,8 +1,8 @@
-const Buscador = Vue.component('buscador-peliculas', {
-    data: function () {
-        return {busqueda: 'cars', resultado: []}
-    },
-    template: `
+const Buscador = Vue.component("buscador-peliculas", {
+  data: function () {
+    return { busqueda: "cars", resultado: [] };
+  },
+  template: `
     <div>
         <b-form-input v-model="busqueda" placeholder="Pon el titulo a buscar"></b-form-input>
         <b-button @click="buscar" variant="success">Buscar</b-button>
@@ -18,75 +18,95 @@ const Buscador = Vue.component('buscador-peliculas', {
         </b-row>
         
     </div>`,
-    methods: {
-        afegirPelicula: function (peli) {
-            let datosEnvio = new FormData();
-            datosEnvio.append("Title", peli.Title);
-            datosEnvio.append("Poster", peli.Poster);
-            datosEnvio.append("imdbID", peli.imdbID);
+  methods: {
+    afegirPelicula: function (peli) {
+      let datosEnvio = new FormData();
+      datosEnvio.append("Title", peli.Title);
+      datosEnvio.append("Poster", peli.Poster);
+      datosEnvio.append("imdbID", peli.imdbID);
 
-            url = 'http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA';
-            fetch(url, {
-                method: 'POST',
-                body: datosEnvio
-            })
-        },
-        buscarInformacion: function (id) {
-            fetch("https://www.omdbapi.com/?apikey=2f34fcfe&i=" + id).then(response => response.json()).then(data => {
-                Swal.fire({title: data.Title, text: data.Plot})
-            });
-        },
-        buscar: function () {
-            fetch('http://www.omdbapi.com/?i=tt3896198&apikey=2f34fcfe&s=' + this.busqueda).then((response) => response.json()).then(data => {
-                this.resultado = data.Search;
-            });
-        }
-    }
-
-})
-
-const Admin = Vue.component('zona-privada', {
-    data: function () {
-        return {pelicules: []}
+      url =
+        "http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA";
+      fetch(url, {
+        method: "POST",
+        body: datosEnvio,
+      });
+      Swal.fire({
+        title: "Pelicula añadida correctamente",
+        icon: "success",
+      });
     },
-    template: `
+    buscarInformacion: function (id) {
+      fetch("https://www.omdbapi.com/?apikey=2f34fcfe&i=" + id)
+        .then((response) => response.json())
+        .then((data) => {
+          Swal.fire({ title: data.Title, text: data.Plot });
+        });
+    },
+    buscar: function () {
+      fetch(
+        "http://www.omdbapi.com/?i=tt3896198&apikey=2f34fcfe&s=" + this.busqueda
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          this.resultado = data.Search;
+        });
+    },
+  },
+});
+
+const Admin = Vue.component("zona-privada", {
+  data: function () {
+    return { pelicules: [] };
+  },
+  template: `
     <b-row>
-        <b-col md="3" v-for="peli in pelicules">     
+        <b-col md="3" v-for="(peli, index) in pelicules">     
         <card-pelicula :datos=peli>
-            <b-button class="button-red" pill @click="borrarPelicula(peli.id)" variant="outline-dark">Borrar</b-button>
+            <b-button class="button-red" pill @click="borrarPelicula(peli.id, index)" variant="outline-dark">Borrar</b-button>
         </card-pelicula>
         </b-col>
     </b-row>
     `,
-    mounted: function () {
-        url = 'http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA';
-        fetch(url).then((response) => response.json()).then((data) => {
-            this.pelicules = data.records;
-            // console.log(data.records);
-        });
+  mounted: function () {
+    url =
+      "http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA";
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        this.pelicules = data.records;
+      });
+  },
+  methods: {
+    borrarPelicula: function (id, pos) {
+      fetch(
+        "http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA/" +
+          id,
+        { method: "DELETE" }
+      );
+      this.pelicules.splice(pos, 1);
+      Swal.fire({
+        title: "Pelicula borrada correctamente",
+        icon: "success",
+      });
     },
-    methods: {
-        borrarPelicula: function (id) {
-            fetch('http://apisgaspar.alumnes.inspedralbes.cat/php-crud-api.php/records/PELICULA/' + id, {method: 'DELETE'}).then((response) => response.json()).then((data) => { // this.peliculas.splice(pos, 1)
-            });
-        }
-    }
-})
+  },
+});
 
-Vue.component('login', {
-    data: function () {
-        return {
-            form: {
-                usuari: '',
-                contrasenya: ''
-            },
-            logged: false,
-            imgSrc: '',
-            nombre: '',
-            isloading: false
-        }
-    },
-    template: `
+Vue.component("login", {
+  data: function () {
+    return {
+      form: {
+        usuari: "",
+        contrasenya: "",
+      },
+      logged: false,
+      imgSrc: "",
+      nombre: "",
+      isloading: false,
+    };
+  },
+  template: `
     <div>
         <div v-show="!logged" id="formUsuari">
             <b-form-input v-model="form.usuari" placeholder="Username" required></b-form-input>
@@ -99,41 +119,48 @@ Vue.component('login', {
             <b-button @click="logout" variant="success">Log out</b-button>
         </div>
     </div>`,
-    methods: {
-        submitLogin: function () {
-            this.isloading = true;
-            fetch('http://alvaro.alumnes.inspedralbes.cat/loginGET.php?username=' + this.form.usuari + '&pwd=' + this.form.contrasenya).then((response) => response.json()).then(data => {
-                if (data.exito) {
-                    this.logged = true;
-                    this.imgSrc = data.imagen;
-                    this.nombre = data.nombre;
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Login incorrecte',
-                        text: 'Torna a intentar-ho!',
-                        showClass: {
-                            popup: 'animate__animated animate__fadeInDown'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__fadeOutUp'
-                        }
-                    })
-                }
-                this.isloading = false;
+  methods: {
+    submitLogin: function () {
+      this.isloading = true;
+      fetch(
+        "http://alvaro.alumnes.inspedralbes.cat/loginGET.php?username=" +
+          this.form.usuari +
+          "&pwd=" +
+          this.form.contrasenya
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.exito) {
+            this.logged = true;
+            this.imgSrc = data.imagen;
+            this.nombre = data.nombre;
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Login incorrecte",
+              text: "Torna a intentar-ho!",
+              showClass: {
+                popup: "animate__animated animate__fadeInDown",
+              },
+              hideClass: {
+                popup: "animate__animated animate__fadeOutUp",
+              },
             });
-        },
-        logout: function () {
-            this.logged = false;
-            this.form.usuari = '';
-            this.form.contrasenya = '';
-        }
-    }
-})
+          }
+          this.isloading = false;
+        });
+    },
+    logout: function () {
+      this.logged = false;
+      this.form.usuari = "";
+      this.form.contrasenya = "";
+    },
+  },
+});
 
-Vue.component('card-pelicula', {
-    props: ['datos'],
-    template: `
+Vue.component("card-pelicula", {
+  props: ["datos"],
+  template: `
     <b-card border-variant="secondary" :header="datos.Title" header-border-variant="secondary" align="center">
     <div>
         <b-img thumbnail fluid :src="datos.Poster" :alt="datos.Title"></b-img>
@@ -141,25 +168,60 @@ Vue.component('card-pelicula', {
         <slot></slot>
     </div>
     </b-card>`,
-    methods: {
-        enviarDades: function () {}
-    }
-})
+  methods: {
+    enviarDades: function () {},
+  },
+});
 
 // =============== Routes ===============
 const routes = [
-    {
-        path: '/',
-        component: Buscador
-    }, {
-        path: '/admin',
-        component: Admin
-    },
-]
+  {
+    path: "/",
+    component: Buscador,
+  },
+  {
+    path: "/admin",
+    component: Admin,
+  },
+];
 
 // 3. Create the router instance and pass the `routes` option
 const router = new VueRouter({
-    routes // short for `routes: routes`
+  routes, // short for `routes: routes`
+});
+
+//PINIA
+
+const useLogStore = Pinia.defineStore('counter', {
+    state() {
+        return {
+            logged: false
+        }
+    },
+    actions: {
+        login() {
+            this.logged = true;
+        },
+        logout() {
+            this.logged = false;
+        }
+    }
 })
 
-let app = new Vue({el: '#app', router});
+Vue.use(Pinia.PiniaVuePlugin);
+Vue.use(BootstrapVue);
+
+let app = new Vue({
+  el: "#app",
+  router,
+  pinia: Pinia.createPinia(),
+  computed: {
+    //Necesario para que funcione pinia
+    ...Pinia.mapState(useLogStore, ["logged"]),
+  },
+  methods: {
+    //Necesario para que funcione pinia
+    ...Pinia.mapActions(useLogStore, ["login"]),
+    ...Pinia.mapActions(useLogStore, ["logout"])
+  },
+});
