@@ -1,5 +1,5 @@
 {
-  "name": "pelicules-vue",
+  "name": "vue-project",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,8 +8,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "bootstrap": "^5.3.0-alpha1",
-    "bootstrap-vue": "^2.23.1",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
