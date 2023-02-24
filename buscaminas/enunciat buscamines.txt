@@ -1,0 +1,10 @@
+MATRIZ DE 10x10
+
+-8 no mina NO VISITADA
+-9 mina NO VISITADA
+
+0..8 casilla visitada (indica las minas alrededor)
+
+1. Generar una matriz de 10x10 con -8 y -9
+
+2. Render de la matriz
