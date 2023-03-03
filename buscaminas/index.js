@@ -104,6 +104,7 @@ function contarMines(pos) {
             if (i >= 0 && i < N && j >= 0 && j < N) {
                 if (tablero[i][j] == -9 || tablero[i][j] == -5) {
                     contMines++;
+                    console.log(contMines, i, j);
                 }
             }
         }
