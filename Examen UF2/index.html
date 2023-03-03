@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase</title>
+</head>
+
+<body>
+    <h1>Alumne 1</h1>
+    <br>
+    Nom Alumne <input type="text" name="nom" id="nom_alu1" required>
+    <br>
+    <h1>Alumne 2</h1>
+    <br>
+    Nom Alumne <input type="text" name="nom" id="nom_alu2" required>
+    <br>
+    Nom cicle <input type="text" name="a" id="cicle_alu2" required>
+    <br>
+    Menor d'edat? <input type="checkbox" name="a" id="menor_alu2">
+    <br>
+    De grau mig? <input type="checkbox" name="a" id="grauMig_alu2">
+    <br>
+    <button onclick="iniciaAlumnes()">Inicia alumnes</button>
+</body>
+<script src="index.js"></script>
+<script>
+    let nomAlumne1 = document.getElementById("nom_alu1")
+    let nomAlumne2 = document.getElementById("nom_alu2")
+    let nomCicleAlumne2 = document.getElementById("cicle_alu2")
+    let menorAlumne2 = document.getElementById("menor_alu2")
+    let grauMigAlumne2 = document.getElementById("grauMig_alu2")
+
+    let alu1
+    let alu2
+    function logAlumnes() {
+        let htmlStr = "<p>"
+        htmlStr += alu1.imprimirDades() + "</p>"
+        htmlStr += "<p>" + alu2.imprimirDades() + "</p>"
+        document.write(htmlStr)
+        // console.log(alu1.imprimirDades());
+        // console.log(alu2.imprimirDades());
+    }
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    function iniciaAlumnes() {
+        alu1 = new alumneCF(nomAlumne1.value);
+
+        alu2 = new alumneCFGS(nomAlumne2.value, nomCicleAlumne2.value, menorAlumne2.checked, grauMigAlumne2.checked);
+        // console.log(menorAlumne2.checked, grauMigAlumne2.checked);
+
+        logAlumnes()
+
+        document.write('<button onclick="afegeixNotes()">Afegir notes</button>');
+    }
+
+    function afegeixNotes() {
+        for (let i = 0; i < 3; i++) {
+            alu1.afegirNota(getRandomInt(10))
+        }
+
+        for (let i = 0; i < 3; i++) {
+            alu2.afegirNota(getRandomInt(10))
+        }
+
+        logAlumnes()
+        document.write('<button onclick="passarDeCurs()">Passar de curs</button>');
+    }
+
+    function passarDeCurs() {
+        document.write("-- PASSEN DE CURS --");
+
+        document.write("<p>" + alu1.passarDeCurs() + "</p>");
+        document.write("<p>" + alu2.passarDeCurs() + "</p>");
+
+        logAlumnes()
+    }
+
+
+
+
+</script>
+
+</html>
